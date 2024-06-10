@@ -1,0 +1,64 @@
+import numpy as np
+import pandas as pd
+#import pandas_profiling
+import tensorflow as tf
+import sklearn.metrics as metrics
+
+# for visualization
+import matplotlib.pyplot as plt
+import seaborn as sns
+import datetime as dt
+%matplotlib inline
+
+# Import Warnings
+import warnings
+warnings.simplefilter(action="ignore")
+
+# Setting Configurations:
+pd.set_option('display.max_columns', None)
+pd.set_option('display.width', 200)
+pd.set_option('display.float_format', lambda x: '%.3f' % x)
+
+# for data splitting, transforming and model training
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import MinMaxScaler
+
+import os
+for dirname, _, filenames in os.walk('/kaggle/input'):
+    for filename in filenames:
+        print(os.path.join(dirname, filename))
+# Load the Iris dataset into a Pandas DataFrame
+data = pd.read_csv('/content/Iris.csv')
+data.head()
+data.drop('Id',axis=1,inplace=True) #dropping the Id column as it is unecessary
+
+data.info()  
+from pandas.api.types import is_numeric_dtype
+
+for col in data.columns:
+    if is_numeric_dtype(data[col]):
+        print('%s:' % (col))
+        print('\t Mean = %.2f' % data[col].mean())
+        print('\t Standard deviation = %.2f' % data[col].std())
+        print('\t Minimum = %.2f' % data[col].min())
+        print('\t Maximum = %.2f' % data[col].max())
+duplicates = data[data.duplicated()]
+print("Number of duplicates:", len(duplicates))
+data = data.drop_duplicates()
+# Checking for outliers
+data.describe()
+# Checking for the data types
+data.dtypes
+# Checking for the shape of the dataset
+data.shape
+# Checking for the unique values
+data.nunique()
+# Checking for the value counts
+data["Species"].value_counts()# Checking for the value counts
+data['Species'].value_counts().plot(kind='bar')
+plt.show()
+# Checking for the value counts
+data['Species'].value_counts().plot(kind='pie')
+plt.show()
